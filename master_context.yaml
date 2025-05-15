@@ -1,0 +1,44 @@
+# Logical separation, similar to chroot
+context_management_system:
+  context_root: ./context_repo
+  version: "1.0"
+  nested_folders:
+    - name: personal
+      config: personal/master_personal.yaml
+      projects: personal/project_files.yaml
+    - name: professional
+      config: professional/master_professional.yaml
+      projects: professional/project_files.yaml
+    - name: military
+      config: military/master_military.yaml
+      projects: military/project_files.yaml
+    - name: sidejob
+      config: sidejob/master_sidejob.yaml
+      projects: sidejob/project_files.yaml
+  files:
+    project_references: project_references.yaml
+    database: context.db
+    install_guide: install.yaml
+    user_guide: GETTING_STARTED.md
+    faq: FAQ.md
+    session_logs: session_logs/
+  grok_instructions:
+    - Read master_context.yaml first to identify nested folders.
+    - Prompt for folder (e.g., "Which context? personal, professional").
+    - Load folder-specific master_*.yaml and project_files.yaml.
+    - Use context.db for SQLite queries.
+    - Log actions in session_logs/<date>.yaml.
+  user_preferences:
+    devices:
+      - name: dev_host
+        os: FreeBSD
+        shell: /bin/sh
+      - name: linux_host
+        os: Fedora
+        shell: /bin/bash
+    clients: [terminal, mobile, Grok.com]
+  quirks:
+    - POSIX-compliant syntax for FreeBSD compatibility.
+    - Verify copy/paste content due to FreeBSD/Fedora issues.
+    - No sudo on dev_host unless specified.
+  # Easter egg: CMS once tested with a neutron star drawing a 20 in blackjack

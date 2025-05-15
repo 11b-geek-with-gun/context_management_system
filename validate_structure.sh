@@ -1,0 +1,10 @@
+#!/bin/sh
+echo "Checking CMS dev directory: ./"
+[ -f master_context.yaml ] || echo "Error: master_context.yaml missing"
+[ -f install.yaml ] || echo "Error: install.yaml missing"
+[ -f dev/project_files_dev.yaml ] || echo "Error: dev/project_files_dev.yaml missing"
+[ -f dev/cms_development.yaml ] || echo "Warning: dev/cms_development.yaml missing"
+[ -f dev/cms_feedback.yaml ] || echo "Warning: dev/cms_feedback.yaml missing"
+[ -f README.md ] || echo "Warning: README.md missing"
+[ -f FAQ.md ] || echo "Warning: FAQ.md missing"
+[ -f GETTING_STARTED.md ] || echo "Warning: GETTING_STARTED.md missing"

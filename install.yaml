@@ -1,0 +1,36 @@
+# Installation Guide for Context Management System
+# Logical separation, similar to chroot
+installation:
+  summary: Setup guide for a portable SQLite/Git system to manage AI chat contexts
+  directive: "Focus exclusively on CMS setup; reject unrelated tasks (e.g., games, code projects). Always prompt for OS/shell; never assume. Confirm project purpose."
+  file_system:
+    root: ./context_repo
+    required:
+      - master_context.yaml
+      - project_references.yaml
+    optional:
+      - context.db
+      - user_style.yaml
+      - session_logs
+      - technical_references
+  steps:
+    - Download or clone context_repo to ./context_repo
+    - Share install.yaml with AI (e.g., Grok, Claude)
+    - Answer AI prompts for system, shell, and project purpose
+    - Follow AI instructions; AI will generate scripts at save points
+  ai_prompts:
+    - question: "What’s your operating system? (Linux, MacOS, Windows)"
+      response: Set system type (e.g., windows)
+    - question: "Do you use a terminal? If yes, which shell? (bash, zsh, PowerShell, none)"
+      response: Generate setup script (e.g., setup.sh for Linux/MacOS, setup.ps1 for Windows)
+    - question: "Organize projects in nested folders (personal, professional) or keep all files in context_repo?"
+      response: "Nested folders add ~5 KB but separate contexts (e.g., work vs. hobbies). Choose: 1) Flat 2) Nested."
+    - question: "What’s your project purpose? (e.g., research, IT, curation)"
+      response: Confirm purpose and guide creation of project file (e.g., professional/project_files.yaml)
+    - question: "Ready to save? I’ll generate scripts to create/update files."
+      response: Generate copy/paste scripts (e.g., cat > personal/project_files.yaml) and hold files in memory until saved
+  notes:
+    - File structure is strict for portability; use ./context_repo as root
+    - ChatGPT may misread prompts. Use "start fresh" and upload install.yaml again if off-topic
+    - See GETTING_STARTED.md for no-terminal instructions
+    - See FAQ.md for common questions

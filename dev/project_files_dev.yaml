@@ -1,0 +1,9 @@
+nested_folders:
+  personal:
+    example_project:
+      status: "template"
+      notes: "Add personal projects here (e.g., home network upgrade)."
+  professional:
+    example_project:
+      status: "template"
+      notes: "Add work projects here (e.g., IT tasks)."

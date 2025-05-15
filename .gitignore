@@ -1,0 +1,14 @@
+../../*
+!../../install.yaml
+!../../master_context.yaml
+!../../README.md
+!../../FAQ.md
+!../../GETTING_STARTED.md
+*.db
+*.log
+context_db.sql
+user_style.yaml
+master_context.txt
+project_references.yaml
+check_projects.sh
+list_projects.sh

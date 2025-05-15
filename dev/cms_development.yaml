@@ -1,0 +1,14 @@
+project: CMS Development
+date: 2025-04-24
+permissions: 644  # Default
+context: Day 0 CMS project
+status: Ongoing
+details:
+  - Chroot structure proposed for modularity
+  - Categories: personal, professional, side-job, military
+  - Isolation: No external references unless explicit
+  - Dev benefit: Supports nested systems (e.g., sub-chroots)
+  - Flexibility: Not overly restrictive, AI aware of nested structures
+notes:
+  - Awaiting end-of-day update on common devices and CMS clarifications
+  - Current tasks under professional chroot

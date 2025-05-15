@@ -1,0 +1,15 @@
+feedback: CMS Structure
+date: 2025-04-24
+permissions: 644  # Default
+context: Day 0 CMS project
+notes:
+  - Jail analogy updated to chroot
+  - Projects self-contained, no external references unless explicit
+  - Root project file possible, but core data in isolated files
+  - Proposed chroot structure:
+    - personal: Previous personal projects
+    - professional: Work tasks (e.g., school camera fixes, printer moves)
+    - side-job: Future side gigs (not implemented)
+    - military: Potential military projects (not implemented)
+  - CMS as project: Chroot beneficial for dev, not overly restrictive
+  - AI to be aware of nested systems (e.g., sub-chroots)
