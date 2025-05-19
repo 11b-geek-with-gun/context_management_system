@@ -1,0 +1,6 @@
+projects:
+  - project: Secondbank of Riverdale
+    codename: stingray
+    path: ../prod/stingray/project_starter.yaml
+    status: production
+    summary: Honeypot themed as Secondbank of Riverdale to detect scammers with decoy webpages, fake authentication, dummy links, slow loading, nslookup, and port scanning
