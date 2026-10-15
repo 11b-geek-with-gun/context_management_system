@@ -1,21 +1,8 @@
-# Context Management System
-
-## Overview
-The Context Management System (CMS) is a framework for managing projects utilizing various AI sources.
-  -Reason: When starting a new project or changing AI (or AI losing context), a project file will bring the AI up to speed on the task.
-  -Focus: Keeping CMS lightweight, portable, and scalable.
-
-## Uses (thus far): 
-
-  -- Low Voltage Technician: The Context Management System serves as a robust tool for maintaining a standardized daily notetaking system in IT support environments. It enables technicians to systematically log service tickets completed throughout the day, capturing essential details such as client-reported problems with hardware (e.g., device failures or configurations), software (e.g., application bugs or updates), and networking (e.g., connectivity issues or security concerns). Additionally, the system facilitates the inclusion of comprehensive overviews of client network topologies—detailing components like routers, switches, servers, and endpoints—and site maps for visual reference, ensuring all contextual information is centralized, searchable, and easily updatable for future reference or team collaboration. This approach streamlines troubleshooting, enhances knowledge sharing, and supports compliance with service level agreements by providing a consistent format for documentation.
-
-  -- Homelab: The Context Management System (CMS) serves as a versatile, YAML-driven framework that streamlines the organization and retrieval of diverse contextual data within a repository like this one, enabling users to maintain a cohesive knowledge base across personal homelab experiments, professional IT support tasks, and specialized projects. By structuring information into categorized directories—such as technical_references for detailed network topologies, device inventories, and site-specific configurations (e.g., school or client YAML files), daily_notes for timestamped logging of service tickets and resolutions, and projects for development and production workflows—CMS facilitates standardized note-taking that captures client hardware/software/networking issues, overviews of topologies, and site maps in a searchable, updatable format. This setup not only enhances troubleshooting efficiency and team collaboration through scripts like validate_structure.sh and setup.sh but also supports hobbyist revivals by allowing seamless updates to master_context.yaml or project_files.yaml, ensuring all elements remain interconnected and accessible without redundant effort, ultimately reducing cognitive load and improving long-term knowledge retention in dynamic environments.
-
-## Project Structure
-- **Development**: `~/context_repo/personal/projects/dev/` contains CMS development (`context_management_system`, `test_cms`) and other dev projects.
-- **Production**: `~/context_repo/personal/projects/prod/` contains production projects.
-
-## Setup
-See `GETTING_STARTED.md` for installation and `setup.sh` for configuration.
-
-## Initial Tests
+Context Management System (CMS)
+Version 1.0.0-Release · License: CC BY 4.0
+CMS is a plain-text way to give any AI assistant the full context of a project in one file. When you start a new chat, switch to a different LLM, or an AI loses the thread, you paste in the project file and the AI is back up to speed.
+It is built around a few simple ideas:
+One file. A project lives in a single YAML file: rules, history, dead ends, notes, and next steps.
+Portable. No tools, accounts, or databases required. Works with any LLM that can read text.
+Self-describing. Each project file carries its own manifest, so it still works without the installer.
+Remembers what failed. Dead ends are recorded so the AI stops proposing the same bad ideas.
