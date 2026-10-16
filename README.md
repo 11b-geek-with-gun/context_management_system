@@ -12,7 +12,7 @@ Self-describing. Each project file carries its own manifest, so it still works w
 Remembers what failed. Dead ends are recorded so the AI stops proposing the same bad ideas.
 What's in this repo
 File	Purpose
-install.yaml	The CMS installer: the specification, schema, and bootstrap sequence for the protocol
+CMS_install_v1.0.0-Release.yaml	The CMS installer: the specification, schema, and bootstrap sequence for the protocol
 LICENSE	CC BY 4.0 license text
 
 The installer is an authoring tool. Once a project file contains its own cms_manifest, the installer is not needed to use that file.
@@ -52,7 +52,7 @@ Homelab: infrastructure notes and project tracking
 Writing and documentation projects that span several AI tools
 Status and history
 
-1.0.0-Release is the first stable version, validated across several LLMs. The full changelog is in install.yaml under dev_lineage.
+1.0.0-Release is the first stable version, validated across several LLMs. The full changelog is in CMS_install_v1.0.0-Release.yaml under dev_lineage.
 
 License
 
