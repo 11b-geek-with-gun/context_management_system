@@ -19,7 +19,7 @@ The installer is an authoring tool. Once a project file contains its own cms_man
 
 Quick start
 Open a chat with your LLM of choice.
-Attach or paste install.yaml.
+Attach or paste CMS_install_v1.0.0-Release.yaml.
 Ask it to create a new CMS project file for your project.
 Answer the single question it asks (it infers everything else).
 Save the YAML it gives you. That file is your project.
@@ -33,7 +33,7 @@ constraints_and_boundaries: hard rules (capped at 5) and negative paths / dead e
 dynamic_context: notes, reminders, and staging entries awaiting roll-up
 action_plan: next phases and dependencies
 
-The full schema is in install.yaml.
+The full schema is in CMS_install_v1.0.0-Release.yaml.
 
 Design principles
 Single-file output is the default. Splitting files happens only when you ask.
