@@ -1,0 +1,334 @@
+# ==============================================================================
+# CONTEXT MANAGEMENT SYSTEM (CMS) - INSTALLER & BOOTSTRAPPER
+# ==============================================================================
+# Version: 1.0.0-beta.5
+# Paradigm: Self-Describing, Versioned Context Interchange Protocol
+#           (Monolithic Single-File Context Management, now self-portable
+#           at the individual project-file level, not just at the installer
+#           level.)
+# Purpose: Authoritative meta-template for initializing, parsing, merging,
+#          and executing portable project context files across any LLM.
+# ==============================================================================
+
+cms_installer:
+  meta:
+    system_name: "Context Management System (CMS)"
+    cms_version: "1.0.0-beta.4"   # NOTE: intentionally unchanged — see versioning_rules below
+    installer_version: "1.0.0-beta.5"
+    status: "Beta"
+    design_goal: >
+      Zero-dependency single-file portability, modular fragment merging, and
+      cross-chat lineage preservation. As of beta.5: individual project files
+      are now self-bootstrapping via an embedded manifest, so the installer
+      itself becomes an authoring tool rather than a runtime dependency.
+    scope_note: >
+      This file governs how the CMS engine is authored, versioned, and how
+      NEW project files should be constructed. It is NOT required at runtime
+      by any project file that already carries header.cms_manifest — see
+      standard_project_schema.header.cms_manifest and llm_bootstrapper below.
+
+  # ----------------------------------------------------------------------------
+  # CORE INGESTION & STRUCTURAL INTEGRITY DIRECTIVES
+  # ----------------------------------------------------------------------------
+  ingestion_rules:
+    isolation_level: "Logical project separation (chroot-style context boundary)"
+    parser_directive: >
+      Treat ingested context files as the authoritative Source of Truth (SoT).
+      Parse structural boundaries, active rules, dead ends, and dynamic notes
+      before generating code, plans, or technical execution paths.
+
+    # Strict constraint to enforce single-file context persistence
+    file_generation_policy:
+      default_behavior: "MONOLITHIC_SINGLE_FILE"
+      rule: >
+        CRITICAL: Never output or separate the Changelog, Development Lineage,
+        or Architecture into independent files unless explicitly requested by
+        the user. All metadata, schema, history, and active project directives
+        MUST remain embedded within a single, self-contained YAML context file.
+
+    # Handling modular files and combined fragments when explicitly required
+    fragment_merging:
+      enabled: true
+      strategy: "Overlay & Merge"
+      syntax:
+        includes: "include_files: ['base_rules.yaml', 'tech_refs.yaml', 'bitbucket_staging.log']"
+      merge_behavior:
+        metadata: "Last-write-wins (Newer keys override older keys)"
+        lists_and_arrays: "Append unique items (Deduplicated)"
+        constraints: "Strict union (All hard constraints remain active)"
+        logs_and_notes: "Chronological append"
+      integrity_note: >
+        Fragment merging and monolithic single-file output are NOT mutually
+        exclusive. Merging governs how multiple SOURCE inputs are combined
+        during ingestion; MONOLITHIC_SINGLE_FILE governs how the OUTPUT is
+        written. An LLM bootstrapper must perform both in sequence, not
+        substitute one for the other. (This is the exact regression that
+        occurred beta.1 -> beta.2 and was fixed in beta.4 — see changelog.)
+
+  # ----------------------------------------------------------------------------
+  # TIERED COMPLEXITY STRATEGY (NEW — beta.5)
+  # ----------------------------------------------------------------------------
+  tiered_complexity:
+    tier_1:
+      name: "Pure Monolithic Flat YAML"
+      default: true
+      description: >
+        High-signal, zero-friction baseline. No terminal/shell execution, no
+        database references, no assumption of local tooling. This is the
+        default and remains sufficient for the large majority of projects.
+    tier_2:
+      name: "Opt-In Extensions"
+      activation: "explicit_user_opt_in"   # never inferred, never auto-enabled
+      examples:
+        - "Local Git / shell script generator"
+        - "SQLite context backing / relational indexing"
+      authority_note: >
+        Extensions are advisory and layered on top of the YAML baseline. The
+        YAML file remains the sole Source of Truth even when Tier 2 is active.
+        Tier 2 state (e.g. a SQLite path, a Git remote) is referenced FROM the
+        YAML as an advisory pointer, never required for the YAML to remain
+        valid or complete on its own.
+    tier_3:
+      name: "LLM Assessment Trigger"
+      description: >
+        Active LLM monitoring for signals that suggest Tier 2 may help. File
+        size alone (e.g. >10 KB) is a NECESSARY but NOT SUFFICIENT precondition
+        to even check — it should not by itself trigger a suggestion.
+      trigger_signals:
+        - signal: "cross_reference_density"
+          definition: >
+            3+ entries in negative_paths_and_dead_ends or bitbucket_staging
+            that reference the same path/topic recurring across sessions.
+          suggests: "SQLite / relational indexing"
+        - signal: "staging_backlog_age"
+          definition: >
+            bitbucket_staging entries left uncompiled across 3+ sessions
+            without roll-up into the main schema.
+          suggests: "Git / versioned snapshotting"
+      suggestion_style: "gentle, single mention, not repeated if declined"
+
+  # ----------------------------------------------------------------------------
+  # EXTENSIONS POLICY (NEW — beta.5, formalizes Proposal B precedence)
+  # ----------------------------------------------------------------------------
+  extensions_policy:
+    sot_authority: "yaml_only"                  # extensions never become authoritative
+    tier2_activation: "explicit_user_opt_in"    # never inferred from context
+    tier2_state_storage: "advisory_pointer_in_yaml"
+
+  # ----------------------------------------------------------------------------
+  # UNIVERSAL PROJECT FILE SCHEMA
+  # ----------------------------------------------------------------------------
+  standard_project_schema:
+    header:
+      project_name: "String (Project Title)"
+      context_id: "String (Unique ID or operational tag)"
+      project_version: "String (Independent version, e.g., v0.4.1 — decoupled from CMS engine version)"
+      cms_schema_version: "1.0.0-beta.5"
+      date: "YYYY-MM"
+      status: "Planning | Active | Maintenance | Deprecated"
+      owner: "String (Operator / Lead)"
+
+      # NEW (beta.5) — embedded, self-sufficient behavioral contract.
+      # This is what makes an individual project file portable on its own,
+      # without requiring this installer file to also be present/loaded.
+      cms_manifest:
+        cms_schema_version: "1.0.0-beta.5"   # mirrors header field; single naming convention, no dual-version drift
+        monolithic_output: true
+        fragment_merging_allowed: true
+        hard_rules_cap: 5
+        hard_rules_cap_exceeded_action: "reject_and_flag"   # never silently truncate or drop a rule
+        handshake: "single_question"
+        handshake_protocol: >
+          Infer all fields possible from existing header/directives content
+          silently, with no visible questions. Then ask exactly ONE
+          consolidated question covering only fields that remain genuinely
+          null. Never ask before inference; never ask more than once per
+          session start.
+        authority_precedence:
+          order:
+            - "header.cms_manifest (this file, if present)"
+            - "external installer file (only consulted if no manifest present)"
+            - "generic best-effort fallback (unmanifested/legacy files)"
+          conflict_rule: >
+            If a manifest is present and an installer file is also loaded and
+            the two disagree, the embedded manifest wins. The installer is an
+            authoring tool, not a runtime authority, once a manifest exists.
+
+      # NEW (beta.5) — machine- and human-readable portability signal
+      portability: "self-contained"   # | "installer-dependent" | "unknown"
+
+    directives:
+      philosophy: "Core guiding principles and high-level architectural goals"
+      system_architecture: "Structural layout of environments, components, or layers"
+
+    # Operational guardrails and historical failure tracking
+    constraints_and_boundaries:
+      hard_rules:
+        - "Explicit rules and boundaries that MUST NOT be violated"
+        # NOTE: count is governed by header.cms_manifest.hard_rules_cap (default 5).
+        # If a proposed addition would exceed the cap, apply
+        # hard_rules_cap_exceeded_action ("reject_and_flag") rather than
+        # silently dropping either the new rule or an existing one.
+      negative_paths_and_dead_ends:
+        - path: "Attempted approach or configuration"
+          result: "FAIL | PARTIAL"
+          reason: "Why it failed (Prevents future LLM sessions from re-proposing bad ideas)"
+
+    # Runtime notes, reminders, and uncompiled stream entries
+    dynamic_context:
+      notes_and_observations:
+        - "Field notes, operational observations, or runtime discoveries"
+      reminders_and_tripwires:
+        - "Pending actions, critical dependencies, or execution triggers"
+      bitbucket_staging:
+        - "Uncompiled append-only entries awaiting periodic snapshot roll-up"
+
+    # Execution roadmap
+    action_plan:
+      next_phases:
+        - "Sequenced actionable steps for immediate execution"
+      dependencies_and_assets:
+        - "Required software, hardware, or external reference files"
+
+  # ----------------------------------------------------------------------------
+  # DEVELOPMENT LINEAGE & CHANGELOG
+  # ----------------------------------------------------------------------------
+  dev_lineage:
+    cms_version_baseline: "1.0.0-beta.5"
+
+    versioning_rules:
+      cms_engine_vs_project: >
+        CMS Installer and Core engine versions strictly match (e.g., v1.0.0-beta.5).
+        Individual user projects retain independent versioning tracks (e.g., FRAGO v1.0,
+        Cabling v2.1) based on their domain lifecycle.
+
+    legacy_artifacts:
+      - id: "neutron_star_blackjack"
+        origin: "0.x Alpha Archives"
+        type: "non-functional / cosmetic"
+        description: >
+          Early alpha build included a flavor-text easter egg referencing a
+          neutron star drawing a 20 in blackjack.
+        status: "retained as archival lineage metadata (non-executing, no schema authority)"
+        schema_authority: "none"   # NEW (beta.5) — explicit flag so a defensive/cautious
+                                    # LLM does not mistake archival lineage notes for
+                                    # active constraints it must enforce
+        note: >
+          Dropped during the beta.1 -> beta.2 hardening pass, apparently as an
+          incidental casualty of prioritizing portability, clarity, and
+          maintainability rather than a deliberate removal. Restored in beta.4
+          as structured data rather than a YAML comment so it persists across
+          future fragment merges and cross-LLM lineage transfers instead of
+          being silently dropped again.
+
+    changelog:
+      - version: "1.0.0-beta.5"
+        date: "2026-08-11"
+        llm_engine: "Claude (multi-LLM reviewed: Grok, ChatGPT)"
+        summary: >
+          Architectural framing shift: CMS moves from "a YAML documentation
+          convention" to "a self-describing, versioned context interchange
+          protocol." Concretely: (1) added header.cms_manifest, an embedded
+          behavioral contract (schema version, monolithic-output flag,
+          fragment-merging flag, hard_rules_cap, handshake protocol, authority
+          precedence) that makes an individual project file self-bootstrapping
+          without requiring this installer file to also be present; (2) added
+          header.portability as a machine-readable self-contained /
+          installer-dependent / unknown signal; (3) added bootstrap step 0 to
+          check for the manifest first and degrade gracefully for legacy
+          (pre-beta.5, "unmanifested") files; (4) formalized tiered_complexity
+          (Tier 1 flat YAML default / Tier 2 opt-in extensions / Tier 3
+          assessment triggers) and extensions_policy, replacing prose-only
+          guidance with explicit precedence fields; (5) defined
+          hard_rules_cap_exceeded_action ("reject_and_flag" — never silently
+          truncate); (6) made regression_check a REQUIRED field on every new
+          changelog entry going forward, not optional prose; (7) added
+          schema_authority: none to legacy_artifacts so archival notes are
+          not mistaken for active constraints. Reviewed collaboratively
+          across Claude, Grok, and ChatGPT before being locked; each caught a
+          distinct gap the others missed (Grok: header key collision in
+          initial draft; ChatGPT: naming drift on schema_version, missing
+          conflict-resolution and cap-exceeded semantics, underspecified
+          handshake protocol).
+        regression_check: >
+          Required. Confirmed this version is additive to beta.4's bootstrap
+          sequence (step 0 inserted before existing steps, none removed or
+          replaced), and that no prior field was silently substituted rather
+          than extended — the specific failure class documented in the
+          beta.2 entry below.
+
+      - version: "1.0.0-beta.4"
+        date: "2026-08-06"
+        llm_engine: "Claude"
+        summary: >
+          Fixed silent bootstrap regression introduced in beta.2: initialization
+          step 3 had substituted "enforce MONOLITHIC_SINGLE_FILE" in place of
+          "process fragment includes / bitbucket entries" rather than adding it
+          alongside that step, despite fragment_merging remaining fully defined
+          in the schema. Bootstrapper now performs both steps explicitly. Promoted
+          the beta.3 "easter egg" from an inline YAML comment (non-parsed, lost
+          across LLM handoffs) to a structured legacy_artifacts field so archival
+          notes survive fragment merges going forward. Substantiated the beta.3
+          portability claim with a concrete dated instance: an external,
+          non-technical user submitted two independent CMS projects with two
+          separate changelogs on 2026-08-06 (used to structure ChatGPT-assisted
+          award recommendation / NCOER writing), demonstrating changelog-driven
+          pathway and dead-end tracking working as intended outside the original
+          author's own workflow.
+
+      - version: "1.0.0-beta.3"
+        date: "2026-08-06"
+        llm_engine: "Grok"
+        summary: >
+          Reinstated residual alpha easter egg under dev_lineage. Added explicit note that
+          some early features may become extinct via natural selection as the system favors
+          portability, clarity, and maintainability. Confirmed portability as a primary
+          original design goal (validated by first external CMS user).
+
+      - version: "1.0.0-beta.2"
+        date: "2026-08-06"
+        llm_engine: "Gemini"
+        summary: >
+          Appended field user feedback. Hardened single-file output constraint to prevent
+          LLMs from splitting project and changelog files. Formalized versioning decoupling
+          rules (CMS/Installer version sync vs. independent project versioning).
+          [Unlogged at the time: this revision also replaced bootstrap step 3's fragment-
+          processing instruction with the monolithic-file enforcement instruction, rather
+          than adding the latter alongside the former. Corrected in beta.4.]
+
+      - version: "1.0.0-beta.1"
+        date: "2026-08-05"
+        llm_engine: "Gemini"
+        summary: "Compiled clean Beta 1 baseline. Formatted modular fragment merging, abstract constraints, and cross-chat lineage."
+
+      - version: "0.x (Alpha Archives)"
+        date: "2026-05 through 2026-07"
+        llm_engines: ["Claude", "Grok", "Gemini", "ChatGPT"]
+        summary: "Exploratory alpha phase. Validated single-file portability, SQLite/Git decoupling, and BitBucket logging concept. Tested and discarded over-engineered hCMS security abstraction branch due to LLM prompt injection/alignment interference."
+
+  # ----------------------------------------------------------------------------
+  # LLM INITIALIZATION HANDSHAKE
+  # ----------------------------------------------------------------------------
+  llm_bootstrapper:
+    initialization_sequence:
+      - step: 0
+        action: >
+          Check header.cms_manifest on the ingested project file. If present,
+          treat it as authoritative per manifest.authority_precedence — do NOT
+          require or wait for this separate installer file to also be loaded.
+          If absent (legacy pre-beta.5 project), fall back to full installer
+          semantics if this file is available; otherwise degrade to
+          best-effort generic YAML handling and flag the file as
+          "unmanifested — portability not guaranteed."
+      - step: 1
+        action: "Acknowledge project context ingestion and present operational status."
+      - step: 2
+        action: "Extract hard rules and dead ends to establish output execution boundaries. Enforce hard_rules_cap; apply hard_rules_cap_exceeded_action if violated."
+      - step: 3
+        action: "Process any attached fragment includes or staged bitbucket entries (per fragment_merging rules)."
+      - step: 4
+        action: "Enforce MONOLITHIC_SINGLE_FILE policy: keep changelog, lineage, and schema embedded within a single project YAML."
+      - step: 5
+        action: "Execute handshake per header.cms_manifest.handshake_protocol — infer silently first, then ask at most one consolidated question for genuinely missing fields."
+      - step: 6
+        action: "Prompt user for primary operational target or next phase action."
